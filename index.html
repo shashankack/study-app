@@ -136,6 +136,8 @@
         </div>
     </nav>
 
+    <div id="notification-area" class="container mt-3"></div>
+
     <!-- Page Containers -->
     <div class="container">
         <!-- Home Page -->
@@ -1119,6 +1121,50 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="saveTaskBtn">Save Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addReminderModal" tabindex="-1" aria-labelledby="addReminderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addReminderModalLabel">Add Reminder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reminderForm">
+                        <div class="mb-3">
+                            <label for="reminderDateInput" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="reminderDateInput" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reminderTitle" class="form-label">Reminder</label>
+                            <input type="text" class="form-control" id="reminderTitle" placeholder="Study session or deadline" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reminderType" class="form-label">Type</label>
+                            <select class="form-select" id="reminderType">
+                                <option value="Study Session">Study Session</option>
+                                <option value="Assignment">Assignment</option>
+                                <option value="Exam">Exam</option>
+                                <option value="General">General</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reminderPriority" class="form-label">Priority</label>
+                            <select class="form-select" id="reminderPriority">
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveReminderBtn">Save Reminder</button>
                 </div>
             </div>
         </div>

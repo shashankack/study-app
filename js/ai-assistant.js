@@ -1,5 +1,8 @@
 /* AI & API Logic */
 
+let currentAssessmentNotes = "";
+let currentQuizData = [];
+
 // AI Chatbot Initialization
 function initAIChatbot() {
     const aiChatToggle = document.getElementById('aiChatToggle');
@@ -307,6 +310,20 @@ function processAssessmentResult(userAnswers) {
     localStorage.setItem('study_assessment_history', JSON.stringify(state.quizHistory));
     showNotification(`Score: ${score}%`, "success");
     updateAssessmentUI();
+}
+
+function showNotification(message, type = 'info') {
+    const notificationArea = document.getElementById('notification-area');
+    if (!notificationArea) {
+        console.warn('Notification area not found:', message);
+        return;
+    }
+    const alertType = type === 'danger' ? 'danger' : type === 'warning' ? 'warning' : type === 'success' ? 'success' : 'info';
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${alertType} alert-dismissible fade show`; 
+    alert.role = 'alert';
+    alert.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    notificationArea.appendChild(alert);
 }
 
 function updateAssessmentUI() {

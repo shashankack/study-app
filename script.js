@@ -457,10 +457,11 @@ function generateCalendar() {
 }
 
 function openReminderModal(date) {
-    if (typeof bootstrap !== 'undefined') {
-        const modalElement = document.getElementById('addReminderModal');
+    const modalElement = document.getElementById('addReminderModal');
+    if (modalElement && typeof bootstrap !== 'undefined') {
         const modal = new bootstrap.Modal(modalElement);
-        document.getElementById('reminderDateInput').value = date;
+        const reminderDateInput = document.getElementById('reminderDateInput');
+        if (reminderDateInput) reminderDateInput.value = date;
         modal.show();
     } else {
         const title = prompt(`Add reminder for ${date}:`);
