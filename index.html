@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySmart - AI-Powered Study Planner</title>
+    <!-- Bootstrap CSS for responsiveness -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar py-3">
+        <div class="container d-flex flex-wrap align-items-center justify-content-between">
+            <a class="navbar-brand" href="index.html">
+                STUDY <span class="text-glow">SMART</span>
+            </a>
+
+            <div class="ms-auto d-flex align-items-center">
+                <!-- Toggle Controls (Always Visible) -->
+                <div class="d-flex gap-2">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button class="hamburger-menu-btn" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#desktopNavbarNav">
+                        <i class="fas fa-bars" style="color: var(--primary-brand);"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Horizontal Boxed Menu (Desktop/Mobile Toggled) -->
+            <div class="collapse w-100 mt-4" id="desktopNavbarNav">
+                <!-- Top Row: Greeting and CTAs -->
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4 py-3 border-bottom"
+                    id="authMenuRow" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <div class="user-greeting text-center">
+                        <div class="nav-btn-prefix">Hi,</div>
+                        <div class="nav-btn-label" id="userGreetingName">Student</div>
+                    </div>
+
+                    <button class="nav-pill-btn" data-page="profile">
+                        <i class="fas fa-user-circle"></i>
+                        <div class="nav-btn-text">
+                            <div class="nav-btn-prefix">My</div>
+                            <div class="nav-btn-label">Profile</div>
+                        </div>
+                    </button>
+
+                    <button class="nav-cta-btn" data-page="schedule">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <div class="nav-btn-text">
+                            <div class="nav-btn-prefix">Start</div>
+                            <div class="nav-btn-label">Planning</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="nav-menu-boxed justify-content-center">
+                    <a href="#" class="nav-box active" data-page="home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="#" class="nav-box" data-page="dashboard">
+                        <i class="fas fa-columns"></i>
+                        <span>Calendar</span>
+                    </a>
+                    <a href="#" class="nav-box" data-page="schedule">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Schedule Planner</span>
+                    </a>
+                    <a href="#" class="nav-box" data-page="resources">
+                        <i class="fas fa-book"></i>
+                        <span>Resources</span>
+                    </a>
+                    <a href="#" class="nav-box" data-page="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#" class="nav-box" data-page="ai-chatbot">
+                        <i class="fas fa-robot text-glow-small"></i>
+                        <span>AI Assistant</span>
+                    </a>
+                    <a href="#" class="nav-box border-start ps-4 ms-2" data-page="profile"
+                        style="border-color: rgba(255,255,255,0.1) !important;">
+                        <i class="fas fa-user-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="nav-box ms-2 text-danger" id="logoutBtn"
+                        style="border: 1px solid rgba(220, 53, 69, 0.2); background: rgba(220, 53, 69, 0.05);">
+                        <i class="fas fa-power-off"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel"
+                style="background-color: var(--card-bg); color: var(--text-color); border-left: 2px solid var(--primary-brand);">
+                <div class="offcanvas-header border-bottom">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+                        <i class="fas fa-compass me-2 text-primary"></i> Navigation
+                    </h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body p-0">
+                    <ul class="navbar-nav list-unstyled mb-0 w-100">
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center" href="#" data-page="home"><i
+                                    class="fas fa-home me-3"></i> Home</a></li>
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center" href="#" data-page="dashboard"><i
+                                    class="fas fa-columns me-3"></i> Calendar</a></li>
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center" href="#" data-page="schedule"><i
+                                    class="fas fa-calendar-alt me-3"></i> Schedule Planner</a></li>
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center" href="#" data-page="resources"><i
+                                    class="fas fa-book me-3"></i> Resources</a></li>
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center" href="#" data-page="analytics"><i
+                                    class="fas fa-chart-line me-3"></i> Analytics</a></li>
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center" href="#" data-page="ai-chatbot"><i
+                                    class="fas fa-robot me-3"></i> AI Assistant</a></li>
+                        <li><a class="nav-link py-3 px-4 d-flex align-items-center border-top mt-2" href="#"
+                                data-page="profile"><i class="fas fa-user-circle me-3"></i> Profile Settings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Containers -->
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home-page" class="page-container active">
+            <section class="hero">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <h1>Plan Smarter, Study Better</h1>
+                            <p>StudySmart is an AI-powered study planner that helps students organize their coursework,
+                                manage deadlines, and optimize study schedules for maximum productivity and academic
+                                success.</p>
+                            <div class="mt-4">
+                                <button class="btn btn-primary btn-lg px-5 py-3" id="goToLoginBtn">Get Started for
+                                    Free</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 text-center">
+                            <img src="ChatGPT Image Mar 8, 2026, 09_56_49 AM.png" alt="AI Interface"
+                                class="img-fluid rounded shadow-lg"
+                                style="max-height: 400px; border: 2px solid var(--primary-brand);">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features py-5">
+                <div class="container">
+                    <h2 class="section-title text-center">Core Features</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-robot text-glow-small"></i>
+                                </div>
+                                <h4>AI Study Assistant</h4>
+                                <p>Chat with our advanced AI to summarize notes, solve queries,
+                                    and generate flashcards or quizzes instantly.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <h4>AI-Powered Scheduling</h4>
+                                <p>Get personalized study schedules generated by AI based on your
+                                    courses, deadlines, and preferences.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h4>Progress Analytics</h4>
+                                <p>Track your study habits, completion rates, and subject focus
+                                    with detailed charts and insights.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-user-gear"></i>
+                                </div>
+                                <h4>Personalized Settings</h4>
+                                <p>Customize your study environment with light/dark modes,
+                                    notification alerts, and profile preferences.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-list-check"></i>
+                                </div>
+                                <h4>Smart Calendar</h4>
+                                <p>Visualize your tasks, deadlines, and study sessions in an
+                                    intuitive calendar view.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-file-circle-plus"></i>
+                                </div>
+                                <h4>Resource Manager</h4>
+                                <p>Upload, organize, and tag study materials for easy access
+                                    across all your devices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Upcoming Deadlines on Home Page -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="card p-4 shadow-sm border-0" style="background-color: var(--card-bg);">
+                            <h4 class="mb-4"
+                                style="color: var(--primary-brand); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                <i class="fas fa-clock me-1"></i> Upcoming Deadlines
+                            </h4>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Task/Event</th>
+                                            <th>Category</th>
+                                            <th>Due Date</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="deadlines-table">
+                                        <!-- Populated via script.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login-page" class="page-container">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card p-4 shadow-lg border-0"
+                        style="background-color: var(--card-bg); border-radius: 20px;">
+                        <h2 class="text-center mb-4"
+                            style="color: var(--primary-brand); font-weight: 800; text-transform: uppercase;">
+                            <i class="fas fa-user-lock me-2"></i> User Login
+                        </h2>
+                        <p class="text-center text-muted mb-4">Please log in to your account to access all StudySmart
+                            features.</p>
+
+                        <form id="loginForm">
+                            <div class="mb-4">
+                                <label for="loginEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control form-control-lg" id="loginEmail"
+                                    placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="loginPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control form-control-lg" id="loginPassword"
+                                    placeholder="Enter password" required>
+                            </div>
+                            <div class="mb-4 d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                                </div>
+                                <a href="#" class="text-decoration-none"
+                                    style="color: var(--primary-brand); font-size: 0.9rem;">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 mb-3"
+                                style="font-size: 1.1rem; font-weight: 700;" id="loginBtn">Log In</button>
+                            <div class="text-center mt-3">
+                                <p class="mb-0 text-muted">Don't have an account? <a href="#"
+                                        class="text-decoration-none"
+                                        style="color: var(--primary-brand); font-weight: 700;" id="goToSignUpLink"
+                                        data-page="signup">Sign Up</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign Up Page -->
+        <div id="signup-page" class="page-container">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card p-4 shadow-lg border-0"
+                        style="background-color: var(--card-bg); border-radius: 20px;">
+                        <h2 class="text-center mb-4"
+                            style="color: var(--primary-brand); font-weight: 800; text-transform: uppercase;">
+                            <i class="fas fa-user-plus me-2"></i> Create Account
+                        </h2>
+                        <p class="text-center text-muted mb-4">Join StudySmart to start planning your academic journey.
+                        </p>
+
+                        <form id="signUpForm">
+                            <div class="mb-4">
+                                <label for="signUpEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control form-control-lg" id="signUpEmail"
+                                    placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="signUpPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control form-control-lg" id="signUpPassword"
+                                    placeholder="Create a password" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control form-control-lg" id="confirmPassword"
+                                    placeholder="Repeat your password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 mb-3"
+                                style="font-size: 1.1rem; font-weight: 700;" id="signUpSubmitBtn">Create
+                                Account</button>
+                            <div class="text-center mt-3">
+                                <p class="mb-0 text-muted">Already have an account? <a href="#"
+                                        class="text-decoration-none"
+                                        style="color: var(--primary-brand); font-weight: 700;" id="goToLoginLink"
+                                        data-page="login">Log In</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-container">
+            <!-- Quick Add Button (Restricted to Dashboard) -->
+            <div class="quick-add-btn" id="quickAddBtn" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="fas fa-plus"></i>
+            </div>
+            <h2 class="section-title">Study Calendar</h2>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <h4 id="calendarMonthDisplay">March 2026</h4>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-1" id="prevMonthBtn"><i
+                                        class="fas fa-chevron-left"></i></button>
+                                <button class="btn btn-outline-primary btn-sm" id="nextMonthBtn"><i
+                                        class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid">
+
+
+                            <!-- Calendar days will be generated by JavaScript -->
+                            <div id="calendar-days"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Planner Page -->
+        <div id="schedule-page" class="page-container">
+            <h2 class="section-title">AI-Powered Schedule Planner</h2>
+
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="card p-4 h-100 shadow-sm border-0">
+                        <h4 class="mb-4 text-primary"><i class="fas fa-edit me-2"></i> Input Study Details</h4>
+                        <form id="scheduleForm">
+                            <div class="mb-3">
+                                <label for="courseName" class="form-label">Course/Subject</label>
+                                <input type="text" class="form-control" id="courseName"
+                                    placeholder="e.g., Calculus, Computer Science" required>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="assignmentType" class="form-label">Task Type</label>
+                                    <select class="form-select" id="assignmentType">
+                                        <option value="assignment">Assignment</option>
+                                        <option value="exam">Exam</option>
+                                        <option value="project">Project</option>
+                                        <option value="reading">Reading</option>
+                                        <option value="review">Review</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="priority" class="form-label">Priority</label>
+                                    <select class="form-select" id="priority">
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="dueDate" class="form-label">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDate" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studyHours" class="form-label">Study Hours</label>
+                                    <input type="number" class="form-control" id="studyHours" min="1" max="50" value="5"
+                                        required oninput="if(this.value < 0) this.value = Math.abs(this.value)">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studyDay" class="form-label">Target Day</label>
+                                    <input type="date" class="form-control" id="studyDay" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studyTime" class="form-label">Start Time</label>
+                                    <input type="time" class="form-control" id="studyTime" value="09:00" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="autoTimeSuggest" checked>
+                                    <label class="form-check-label fw-bold" for="autoTimeSuggest">AI Optimal
+                                        Timing</label>
+                                </div>
+                                <small class="text-muted d-block mt-1">AI optimizes for your focus peaks based on
+                                    priority.</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Study Notes (Optional)</label>
+                                <textarea class="form-control" id="notes" rows="3"
+                                    placeholder="Paste or type notes for AI analysis..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="noteUpload" class="form-label">Upload Materials (Optional)</label>
+                                <input type="file" class="form-control" id="noteUpload" accept=".pdf,.doc,.docx,.txt">
+                            </div>
+
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn btn-primary btn-lg" id="generateScheduleBtn">
+                                    <i class="fas fa-robot me-2"></i> Generate AI Schedule
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="card p-4 h-100 shadow-sm border-0" id="scheduleCard">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-primary m-0"><i class="fas fa-clipboard-list me-2"></i> Your AI Schedule
+                            </h4>
+                            <button class="btn btn-outline-danger btn-sm" id="clearScheduleBtn" style="display: none;">
+                                <i class="fas fa-trash me-1"></i> Clear
+                            </button>
+                        </div>
+
+                        <div id="scheduleItems" class="flex-grow-1">
+                            <div class="text-center py-5">
+                                <i class="fas fa-magic fa-4x text-muted mb-3 opacity-25"></i>
+                                <p class="text-muted fs-5">Ready for Analysis</p>
+                                <p class="small text-muted px-4">Fill out the form on the left to generate your
+                                    AI-optimized
+                                    study plan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4" id="suggestionsCard" style="display: none;">
+                <div class="col-12">
+                    <div class="card p-4">
+                        <h4 class="mb-3">AI Schedule Suggestions</h4>
+                        <div id="aiSuggestions">
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary" id="loadDemoSuggestions">
+                                <i class="fas fa-magic me-2"></i> Load Demo AI Suggestions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Resources Page -->
+        <div id="resources-page" class="page-container">
+            <h2 class="section-title">Study Resources</h2>
+
+            <div class="resource-upload">
+                <h4 class="mb-4">Upload New Resource</h4>
+                <form id="uploadForm">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="resourceName" class="form-label">Resource Name</label>
+                            <input type="text" class="form-control" id="resourceName"
+                                placeholder="e.g., Calculus Chapter 5 Notes" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="resourceType" class="form-label">Resource Type</label>
+                            <select class="form-select" id="resourceType" required>
+                                <option value="pdf">PDF Document</option>
+                                <option value="doc">Microsoft Word (DOCX)</option>
+                                <option value="ppt">PowerPoint (PPTX)</option>
+                                <option value="image">Image/Photo</option>
+                                <option value="video">Video Lecture</option>
+                                <option value="link">URL / Web Link</option>
+                                <option value="other">Other/Notes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="resourceSubject" class="form-label">Subject</label>
+                            <select class="form-select" id="resourceSubject" required>
+                                <option value="mathematics">Mathematics</option>
+                                <option value="computer-science">Computer Science</option>
+                                <option value="physics">Physics</option>
+                                <option value="english">English Literature</option>
+                                <option value="chemistry">Chemistry</option>
+                                <option value="biology">Biology</option>
+                                <option value="history">History</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="resourceFile" class="form-label">Upload File</label>
+                            <input type="file" class="form-control" id="resourceFile">
+                            <small class="text-muted">Leave empty if resource is a link</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="resourceTags" class="form-label">Tags (comma separated)</label>
+                        <input type="text" class="form-control" id="resourceTags"
+                            placeholder="e.g., calculus, derivatives, chapter5">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="resourceDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="resourceDescription" rows="3"
+                            placeholder="Brief description of the resource..."></textarea>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i> Upload Resource
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4 class="mb-4">Your Resources</h4>
+
+                    <div class="row" id="resourcesList">
+                        <!-- Resource cards will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div id="analytics-page" class="page-container">
+            <h2 class="section-title">Study Analytics</h2>
+
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="card p-4 shadow-sm border-0 mb-4"
+                        style="background: rgba(255, 204, 0, 0.05); border: 1px solid rgba(255, 204, 0, 0.1) !important;">
+                        <div class="row align-items-center">
+                            <div class="col-md-7">
+                                <h4 class="mb-2"><i class="fas fa-microchip me-2 text-primary"></i> AI Assessment Center
+                                </h4>
+                                <p class="text-muted">Upload your notes to generate a professional MCQ examination
+                                    (20-60 questions) to test your subject proficiency.</p>
+
+                                <div class="mt-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Select Subject</label>
+                                            <select class="form-select" id="assessmentSubject">
+                                                <option value="Mathematics">Mathematics</option>
+                                                <option value="Science">Science</option>
+                                                <option value="History">History</option>
+                                                <option value="Computer Science">Computer Science</option>
+                                                <option value="Literature">Literature</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Question Count</label>
+                                            <input type="range" class="form-range" min="20" max="60" step="10"
+                                                id="assessmentCount" value="20">
+                                            <div class="text-end small text-primary" id="rangeValue">20 Questions</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label for="assessmentUpload"
+                                            class="btn btn-outline-primary w-100 py-3 border-dashed"
+                                            style="border-style: dashed !important;">
+                                            <i class="fas fa-file-upload me-2"></i> Click to Upload Study Notes (.txt /
+                                            .pdf)
+                                            <input type="file" id="assessmentUpload" style="display: none;"
+                                                accept=".txt,.pdf">
+                                        </label>
+                                        <div id="assessmentFileStatus" class="small mt-2 text-center text-success"
+                                            style="display: none;">
+                                            <i class="fas fa-check-circle"></i> Notes ready for analysis
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-primary w-100 mt-3 py-3 shadow-sm"
+                                        id="generateAssessmentBtn">
+                                        <i class="fas fa-wand-magic-sparkles me-2"></i> GENERATE PERMANENT ASSESSMENT
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-5 text-center d-none d-md-block">
+                                <div class="py-4">
+                                    <i class="fas fa-graduation-cap fa-5x opacity-10 mb-3"></i>
+                                    <h5>Permanent Academic Record</h5>
+                                    <p class="small text-muted px-4">Assessments generated here are recorded in your
+                                        permanent profile and cannot be deleted.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4" id="quizSection"
+                        style="display: none; border-left: 5px solid var(--primary-brand);">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 id="quizTitle"><i class="fas fa-question-circle me-2"></i> Subject Proficiency Exam</h4>
+                            <span class="badge bg-primary px-3 py-2" id="questionCount">0/0 Questions</span>
+                        </div>
+                        <div id="quizContainer" style="max-height: 500px; overflow-y: auto; padding-right: 15px;">
+                            <!-- Questions will be injected here -->
+                        </div>
+                        <div class="mt-4 d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">Required for Permanent Record</div>
+                            <button id="submitQuizBtn" class="btn btn-primary btn-lg shadow px-5">
+                                <i class="fas fa-check-circle me-2"></i> SUBMIT TO PROFILE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="card p-4 shadow-sm record-card">
+                        <h4 class="mb-4 text-primary"><i class="fas fa-file-contract me-2"></i> Permanent Academic
+                            Record</h4>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <canvas id="performanceChart" style="max-height: 300px;"></canvas>
+                            </div>
+                            <div class="col-lg-4">
+                                <div id="performanceSummary" class="p-4 border rounded summary-box h-100 shadow-sm">
+                                    <h6>Report Summary</h6>
+                                    <hr>
+                                    <div class="mb-3">
+                                        <label class="text-muted d-block small fw-bold text-uppercase">Overall
+                                            Proficiency</label>
+                                        <h2 id="avgScoreDisplay" class="proficiency-display m-0">0%</h2>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-muted d-block small fw-bold text-uppercase">Total
+                                            Assessments</label>
+                                        <h2 id="totalQuizzesDisplay" class="proficiency-display m-0">0</h2>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="alert alert-permanent py-2 small shadow-sm">
+                                            <i class="fas fa-lock me-1"></i> This report is permanent and cannot
+                                            be deleted.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-top">
+                            <h6 class="mb-3 text-uppercase small fw-bold opacity-50">Detailed Assessment History</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle mb-0">
+                                    <thead>
+                                        <tr class="small opacity-50 text-uppercase">
+                                            <th>Date</th>
+                                            <th>Subject</th>
+                                            <th>Questions</th>
+                                            <th>Score</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="assessmentHistoryBody">
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted small">No assessment
+                                                records found. Complete an exam above to generate data.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page-container">
+            <h2 class="section-title">Profile & Settings</h2>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card profile-card">
+                        <div id="profileIDCard" style="display: none;">
+                            <div class="profile-pic-container mx-auto mb-3"
+                                style="width: 120px; height: 120px; border-radius: 15px; border: 2px solid var(--primary-brand); overflow: hidden; background: #222;">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile"
+                                    class="profile-pic" id="cardProfilePic"
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <h4 id="cardFullName">Your Name</h4>
+                            <p class="text-muted" id="cardStudyLevel">Level/Grade</p>
+                            <p><i class="fas fa-university me-2"></i> <span id="cardUniversity">Institution</span></p>
+                            <p><i class="fas fa-envelope me-2"></i> <span id="cardEmail">Email</span></p>
+                            <div class="mt-2 mb-2">
+                                <span class="badge bg-primary px-3 py-2" id="cardMajor">Field of Study</span>
+                            </div>
+                        </div>
+
+                        <div id="emptyProfilePlaceholder" class="text-center py-4">
+                            <i class="fas fa-id-card fa-4x text-muted mb-3 opacity-25"></i>
+                            <p class="text-muted">Enter and update your details on the right to generate your Student ID
+                                Profile.</p>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-top">
+                            <h5 class="mb-3"><i class="fas fa-chart-line me-2"></i> Performance Track Record</h5>
+                            <div id="profileReportPlaceholder">
+                                <p class="text-muted small">No assessment data available yet.</p>
+                            </div>
+                            <div id="profileAssessmentList" class="mb-3"></div>
+                            <canvas id="profilePerformanceChart" style="display: none; height: 150px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card p-4">
+                        <h4 class="mb-4">Account Settings</h4>
+
+                        <form id="profileForm">
+                            <div class="mb-4 text-center">
+                                <div class="position-relative d-inline-block">
+                                    <div class="profile-photo-preview mb-3 mx-auto" id="photoPreviewContainer"
+                                        style="width: 120px; height: 120px; border-radius: 15px; border: 2px dashed var(--primary-brand); overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(255, 193, 7, 0.05);">
+                                        <i class="fas fa-camera fa-2x opacity-25" id="photoPlaceholderIcon"></i>
+                                        <img src="" id="photoPreview"
+                                            style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <label for="profilePhotoInput"
+                                        class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle"
+                                        style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transform: translate(10px, 10px);">
+                                        <i class="fas fa-plus"></i>
+                                    </label>
+                                    <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;">
+                                </div>
+                                <p class="small text-muted mt-2">Upload or change profile photo</p>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName"
+                                        placeholder="Enter first name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Enter last name"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="email@example.com"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="university" class="form-label">University/Institution</label>
+                                <input type="text" class="form-control" id="university"
+                                    placeholder="Enter institution name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="studyField" class="form-label">Academic Level / Grade</label>
+                                <select class="form-select" id="studyField" required>
+                                    <option value="" selected disabled>Select your level</option>
+                                    <option value="8-9">Grade 8-9</option>
+                                    <option value="9-10">Grade 9-10</option>
+                                    <option value="11-12">Grade 11-12</option>
+                                    <option value="Diploma">Diploma</option>
+                                    <option value="Degree">Degree</option>
+                                    <option value="UG-PG">UG-PG</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="subjects" class="form-label">Current Subjects</label>
+                                <textarea class="form-control" id="subjects" rows="3"
+                                    placeholder="List your current subjects here..."></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </div>
+                        </form>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3">Notification Preferences</h5>
+                        <div class="settings-option">
+                            <div>
+                                <h6>Email Notifications</h6>
+                                <p class="text-muted mb-0">Receive study reminders and updates via email</p>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                            </div>
+                        </div>
+
+                        <div class="settings-option">
+                            <div>
+                                <h6>Assignment Reminders</h6>
+                                <p class="text-muted mb-0">Get notified about upcoming deadlines</p>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="assignmentReminders" checked>
+                            </div>
+                        </div>
+
+                        <div class="settings-option">
+                            <div>
+                                <h6>Study Session Alerts</h6>
+                                <p class="text-muted mb-0">Reminders for planned study sessions</p>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="sessionAlerts">
+                            </div>
+                        </div>
+
+                        <div class="settings-option">
+                            <div>
+                                <h6>Weekly Progress Reports</h6>
+                                <p class="text-muted mb-0">Receive a summary of your weekly study activity</p>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="progressReports" checked>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="settings-option">
+                            <div>
+                                <h5>Theme Selection</h5>
+                                <p class="text-muted mb-0">Choose between light and dark mode</p>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="theme" id="lightTheme" value="light">
+                                <label class="form-check-label" for="lightTheme">Light</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="theme" id="darkTheme" value="dark"
+                                    checked>
+                                <label class="form-check-label" for="darkTheme">Dark</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Chatbot Page -->
+        <div id="ai-chatbot-page" class="page-container">
+            <h2 class="section-title">AI Study Assistant</h2>
+
+            <div class="row g-4 ai-chat-layout">
+                <div class="col-lg-3">
+                    <div class="card p-3 h-100 border-0 shadow-sm" style="background-color: var(--card-bg);">
+                        <h5 class="mb-4" style="color: var(--primary-brand); font-weight: 700;">
+                            <i class="fas fa-brain me-2"></i> Smart Actions
+                        </h5>
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-outline-primary text-start p-3 ai-action-btn" data-action="summary">
+                                <i class="fas fa-file-alt me-2"></i> Generate Summary
+                            </button>
+                            <button class="btn btn-outline-primary text-start p-3 ai-action-btn"
+                                data-action="key-points">
+                                <i class="fas fa-list-ul me-2"></i> Key Points
+                            </button>
+                            <button class="btn btn-outline-primary text-start p-3 ai-action-btn"
+                                data-action="flashcards">
+                                <i class="fas fa-clone me-2"></i> Flashcards
+                            </button>
+                            <button class="btn btn-outline-primary text-start p-3 ai-action-btn" data-action="quiz">
+                                <i class="fas fa-question-circle me-2"></i> Quiz Questions
+                            </button>
+                            <button class="btn btn-outline-primary text-start p-3 ai-action-btn" data-action="notes">
+                                <i class="fas fa-pen-nib me-2"></i> Generate Notes
+                            </button>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-top">
+                            <h6 class="mb-3 text-muted">Upload for Analysis</h6>
+                            <label for="aiNoteUpload" class="ai-upload-label d-block text-center p-3"
+                                style="border: 2px dashed rgba(255, 204, 0, 0.2); border-radius: 10px; cursor: pointer;">
+                                <i class="fas fa-cloud-upload-alt fa-2x mb-2 opacity-50"></i>
+                                <div class="small">Upload Notes</div>
+                                <input type="file" id="aiNoteUpload" style="display: none;">
+                            </label>
+                            <div id="uploadStatus" class="small mt-2 text-center text-success" style="display: none;">
+                                <i class="fas fa-check-circle me-1"></i> Notes Uploaded
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="card d-flex flex-column border-0 shadow-sm"
+                        style="background-color: var(--card-bg); height: 600px; border-radius: 20px;">
+                        <div class="chat-header p-3 border-bottom d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-sm btn-outline-primary me-3" id="aiChatBackBtn"
+                                    title="Back to Home">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                                <div class="bg-primary rounded-circle p-2 me-3">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div class="me-auto">
+                                    <h6 class="mb-0">StudySmart AI</h6>
+                                    <small class="text-success text-opacity-75">Online & Ready to Help</small>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary opacity-50" id="clearChatBtn">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                        </div>
+
+                        <div class="chat-messages flex-grow-1 p-4 overflow-auto" id="aiChatMessages">
+                            <div class="message-ai mb-4">
+                                <div class="message-content p-3"
+                                    style="background: rgba(255, 204, 0, 0.05); border-radius: 0 15px 15px 15px; border: 1px solid rgba(255, 204, 0, 0.1);">
+                                    Hello! I'm your AI Study Assistant. Upload some notes or ask me any question about
+                                    your courses. I can generate summaries, flashcards, or quizzes for you!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chat-input p-3 border-top">
+                            <form id="aiChatForm" class="d-flex gap-2">
+                                <input type="text" id="aiChatMessageInput" class="form-control form-control-lg shadow-sm" placeholder="Type your question or query here..." style="background: #ffffff !important; color: #03045e !important; border: 2px solid var(--secondary-brand) !important; border-radius: 10px;">
+                                <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Toggle -->
+    <div class="floating-chat-trigger" id="aiChatToggle" title="AI Study Assistant">
+        <i class="fas fa-robot text-white"></i>
+        <div class="notification-dot"></div>
+    </div>
+
+    
+            <div class="d-flex justify-content-center gap-2 mb-3">
+                <button class="btn btn-sm btn-primary rounded-circle" style="width:35px;height:35px;" id="pmStart" title="Start">
+                    <i class="fas fa-play" style="font-size:0.8rem; margin-left:2px;"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-light rounded-circle" style="width:35px;height:35px;" id="pmPause" title="Pause">
+                    <i class="fas fa-pause" style="font-size:0.8rem;"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger rounded-circle" style="width:35px;height:35px;" id="pmReset" title="Reset">
+                    <i class="fas fa-redo-alt" style="font-size:0.8rem;"></i>
+                </button>
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+                <span class="badge bg-dark border border-secondary" style="cursor:pointer;" id="pm25">25m</span>
+                <span class="badge bg-dark border border-secondary" style="cursor:pointer;" id="pm5">5m</span>
+                <span class="badge bg-dark border border-secondary" style="cursor:pointer;" id="pm15">15m</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h5 style="color: var(--primary-brand); font-weight: 800;"><i
+                            class="fas fa-graduation-cap me-2"></i> StudySmart</h5>
+                    <p class="mt-3">An AI-powered smart study planner designed to help students organize their
+                        coursework, manage deadlines, and optimize study schedules for maximum productivity.</p>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="home">Home</a></li>
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="dashboard">Dashboard</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="schedule">Schedule
+                                Planner</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h5>Features</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="resources">Resources</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="analytics">Analytics</a>
+                        </li>
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="profile">Profile</a></li>
+                        <li class="mb-2"><a href="#" class="nav-link p-0 border-0" data-page="home">AI Scheduling</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 StudySmart. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of
+                        Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="taskForm">
+                        <div class="mb-3">
+                            <label for="taskTitle" class="form-label">Task Title</label>
+                            <input type="text" class="form-control" id="taskTitle"
+                                placeholder="e.g., Complete Math Assignment" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskSubject" class="form-label">Subject</label>
+                            <select class="form-select" id="taskSubject" required>
+                                <option value="mathematics">Mathematics</option>
+                                <option value="computer-science">Computer Science</option>
+                                <option value="physics">Physics</option>
+                                <option value="english">English Literature</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="taskDueDate" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="taskDueDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="taskPriority" class="form-label">Priority</label>
+                                <select class="form-select" id="taskPriority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="taskDescription" rows="3"
+                                placeholder="Task details..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveTaskBtn">Save Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="script.js"></script>
+    <script src="js/ai-assistant.js"></script>
+</body>
+
+</html>
